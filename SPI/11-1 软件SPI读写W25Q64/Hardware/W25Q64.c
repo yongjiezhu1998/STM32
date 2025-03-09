@@ -112,6 +112,44 @@ void W25Q64_SectorErase(uint32_t Address)
 }
 
 /**
+  * 函    数：W25Q64Block擦除（32KB）
+  * 参    数：Address 指定扇区的地址，范围：0x000000~0x7FFFFF
+  * 返 回 值：无
+  */
+void W25Q64_BlockErase_32KB(uint32_t Address)
+{
+	W25Q64_WriteEnable();						//写使能
+	
+	MySPI_Start();								//SPI起始
+	MySPI_SwapByte(W25Q64_BLOCK_ERASE_32KB);	//交换发送扇区擦除的指令
+	MySPI_SwapByte(Address >> 16);				//交换发送地址23~16位
+	MySPI_SwapByte(Address >> 8);				//交换发送地址15~8位
+	MySPI_SwapByte(Address);					//交换发送地址7~0位
+	MySPI_Stop();								//SPI终止
+	
+	W25Q64_WaitBusy();							//等待忙
+}
+
+/**
+  * 函    数：W25Q64Block擦除（32KB）
+  * 参    数：Address 指定扇区的地址，范围：0x000000~0x7FFFFF
+  * 返 回 值：无
+  */
+void W25Q64_BlockErase_64KB(uint32_t Address)
+{
+	W25Q64_WriteEnable();						//写使能
+	
+	MySPI_Start();								//SPI起始
+	MySPI_SwapByte(W25Q64_BLOCK_ERASE_64KB);	//交换发送扇区擦除的指令
+	MySPI_SwapByte(Address >> 16);				//交换发送地址23~16位
+	MySPI_SwapByte(Address >> 8);				//交换发送地址15~8位
+	MySPI_SwapByte(Address);					//交换发送地址7~0位
+	MySPI_Stop();								//SPI终止
+	
+	W25Q64_WaitBusy();							//等待忙
+}
+
+/**
   * 函    数：W25Q64读取数据
   * 参    数：Address 读取数据的起始地址，范围：0x000000~0x7FFFFF
   * 参    数：DataArray 用于接收读取数据的数组，通过输出参数返回
